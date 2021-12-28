@@ -34,7 +34,8 @@ body {
   flex: 2;
   width: 50%;
   height: 100%;
-  border: 2px solid black;
+  /* border: 2px solid black; */
+  transition: all .25s;
 }
 
 .top-left {
@@ -55,6 +56,13 @@ body {
 .bottom-right {
   border-bottom-right-radius: 100%;
   background-color: #007ED0;
+}
+
+.active {
+  /* box-shadow: 0px 0px 2px 2px hotpink; */
+  background: #5fd673;
+  filter: drop-shadow(0 0 1rem #5fd673);
+
 }
 
 .inner-circle {
