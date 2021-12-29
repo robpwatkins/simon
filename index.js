@@ -1,5 +1,5 @@
 const sequence = [];
-let sequenceIdx = 0;
+let sequenceIndex = 0;
 let playing = false;
 const innerCircle = document.querySelector('.inner-circle');
 
@@ -18,12 +18,12 @@ function handleMouseDown() {
 function handleMouseUp() {
   this.classList.remove('active');
   const { number } = this.dataset;
-  if (number != sequence[sequenceIdx]) return gameOver();
-  if (sequenceIdx == sequence.length - 1) {
+  if (number != sequence[sequenceIndex]) return gameOver();
+  if (sequenceIndex == sequence.length - 1) {
     setTimeout(() => playSequence(), 1000);
     innerCircle.innerHTML = `${sequence.length}`;
   };
-  sequenceIdx++;
+  sequenceIndex++;
 };
 
 function handleTransitionEnd() {
@@ -32,7 +32,7 @@ function handleTransitionEnd() {
 
 function playSequence() {
   playing = true;
-  if (sequence.length == 0) innerCircle.innerHTML = `${sequence.length}`;
+  if (sequence.length == 0) innerCircle.innerHTML = '';
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
   sequence.push(randomNum);
   sequence.forEach((number, index) => {
@@ -40,9 +40,9 @@ function playSequence() {
       const pad = document.querySelector(`[data-number='${number}']`);
       pad.classList.add('active');
       if (index == sequence.length - 1) setTimeout(() => playing = false, 275);
-    }, index * 750)
+    }, (index + 1) * 750)
   })
-  sequenceIdx = 0;
+  sequenceIndex = 0;
 };
 
 function gameOver() {
@@ -53,5 +53,5 @@ function gameOver() {
     innerCircle.addEventListener('click', playSequence);
   }, 1500)
   sequence.splice(0);
-  sequenceIdx = 0;
+  sequenceIndex = 0;
 };
