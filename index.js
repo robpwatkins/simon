@@ -17,6 +17,7 @@ function handleMouseDown() {
 
 function handleMouseUp() {
   this.classList.remove('active');
+  if (sequence.length == 0) return;
   const { number } = this.dataset;
   if (number != sequence[sequenceIndex]) return gameOver();
   if (sequenceIndex == sequence.length - 1) {
