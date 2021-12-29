@@ -85,10 +85,15 @@ body {
 }
 
 .inner-circle {
+  cursor: default;
   position: absolute;
-  /* top: 0; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100px;
   height: 100px;
   background-color: black;
   border-radius: 50%;
+  color: silver;
+  font-family: monospace;
 }
