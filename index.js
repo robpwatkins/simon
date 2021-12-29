@@ -10,21 +10,11 @@ pads.forEach(pad => {
 });
 
 function handlePadClick() {
-  console.log('heyoo');
   const { number } = this.dataset;
   this.classList.add('active');
-  while (sequenceIdx < sequence.length) {
-    console.log('sequence: ', sequence);
-    console.log('number: ', number);
-    if (number != sequence[sequenceIdx]) return gameOver();
-    sequenceIdx++;
-    playSequence();
-  }
-};
-
-function checkSequence(number) {
-  if (number == sequence[sequence.length - 1]) return true;
-  return false;
+  if (number != sequence[sequenceIdx]) return gameOver();
+  if (sequenceIdx == sequence.length - 1) setTimeout(() => playSequence(), 1000);
+  sequenceIdx++;
 };
 
 function handleTransitionEnd() {
@@ -34,15 +24,19 @@ function handleTransitionEnd() {
 function playSequence() {
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
   sequence.push(randomNum);
+  console.log('sequence: ', sequence)
   sequence.forEach((number, index) => {
     setTimeout(() => {
+      console.log('number: ', number);
       const pad = document.querySelector(`[data-number='${number}']`);
       pad.classList.add('active');
     }, index * 1000)
   })
+  sequenceIdx = 0;
 };
 
 function gameOver() {
   sequence.splice();
+  sequenceIdx = 0;
   console.log('Game over!');
 }
