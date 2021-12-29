@@ -1,42 +1,57 @@
-const pads = document.querySelectorAll('.pad');
 const sequence = [];
 let sequenceIdx = 0;
+let playing = false;
+const innerCircle = document.querySelector('.inner-circle');
 
-document.querySelector('.inner-circle').addEventListener('click', playSequence);
+innerCircle.addEventListener('click', playSequence);
 
-pads.forEach(pad => {
-  pad.addEventListener('click', handlePadClick)
+document.querySelectorAll('.pad').forEach(pad => {
+  pad.addEventListener('mousedown', handleMouseDown);
+  pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
 });
 
-function handlePadClick() {
-  const { number } = this.dataset;
+function handleMouseDown() {
   this.classList.add('active');
+};
+
+function handleMouseUp() {
+  this.classList.remove('active');
+  const { number } = this.dataset;
   if (number != sequence[sequenceIdx]) return gameOver();
-  if (sequenceIdx == sequence.length - 1) setTimeout(() => playSequence(), 1000);
+  if (sequenceIdx == sequence.length - 1) {
+    setTimeout(() => playSequence(), 1000);
+    innerCircle.innerHTML = `${sequence.length}`;
+  };
   sequenceIdx++;
 };
 
 function handleTransitionEnd() {
-  this.classList.remove('active');
+  if (playing) this.classList.remove('active');
 };
 
 function playSequence() {
+  playing = true;
+  if (sequence.length == 0) innerCircle.innerHTML = `${sequence.length}`;
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
   sequence.push(randomNum);
-  console.log('sequence: ', sequence)
   sequence.forEach((number, index) => {
     setTimeout(() => {
-      console.log('number: ', number);
       const pad = document.querySelector(`[data-number='${number}']`);
       pad.classList.add('active');
-    }, index * 1000)
+      if (index == sequence.length - 1) setTimeout(() => playing = false, 275);
+    }, index * 750)
   })
   sequenceIdx = 0;
 };
 
 function gameOver() {
-  sequence.splice();
+  innerCircle.innerHTML = 'GAME OVER';
+  innerCircle.removeEventListener('click', playSequence);
+  setTimeout(() => {
+    innerCircle.innerHTML = 'START';
+    innerCircle.addEventListener('click', playSequence);
+  }, 1500)
+  sequence.splice(0);
   sequenceIdx = 0;
-  console.log('Game over!');
-}
+};
