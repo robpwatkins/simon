@@ -1,6 +1,5 @@
 const pads = document.querySelectorAll('.pad');
-const simonSequence = [];
-const playerSequence = [];
+const sequence = [];
 
 document.querySelector('.inner-circle').addEventListener('click', playSequence);
 
@@ -12,18 +11,13 @@ pads.forEach(pad => {
 function handlePadClick() {
   const { number } = this.dataset;
   this.classList.add('active');
-  playerSequence.push(number);
-  if (checkSequence()) return playSequence();
+  if (checkSequence(number)) return playSequence();
   console.log('Game over!');
 };
 
-function checkSequence() {
-  let i = 0;
-  while (i < simonSequence.length) {
-    if (playerSequence[i] == simonSequence[i]) i++;
-    else return false;
-  }
-  return true;
+function checkSequence(number) {
+  if (number == sequence[sequence.length - 1]) return true;
+  return false;
 };
 
 function handleTransitionEnd() {
@@ -32,8 +26,9 @@ function handleTransitionEnd() {
 
 function playSequence() {
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-  simonSequence.push(randomNum);
-  simonSequence.forEach((number, index) => {
+  sequence.push(randomNum);
+  console.log('sequence: ', sequence);
+  sequence.forEach((number, index) => {
     setTimeout(() => {
       const pad = document.querySelector(`[data-number='${number}']`);
       pad.classList.add('active');
