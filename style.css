@@ -10,13 +10,13 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-color: #a0a0a0;
+  background-color: #808080;
   background-image: url(
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 4 4'%3E%3Cpath fill='%23121212' fill-opacity='0.3' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E"
   );
 }
 
-#main {
+#game-container {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -25,7 +25,7 @@ body {
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 4px solid black;
 }
 
 .pad-container {
@@ -35,7 +35,6 @@ body {
 }
 
 .pad {
-  flex: 2;
   width: 100%;
   height: 100%;
   transition: all .25s;
@@ -88,8 +87,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 100px;
-  height: 100px;
+  width: 35%;
+  height: 35%;
   padding: 1rem;
   background-color: black;
   border-radius: 50%;

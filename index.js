@@ -33,7 +33,10 @@ function handleTransitionEnd() {
 
 function playSequence() {
   playing = true;
-  if (sequence.length == 0) innerCircle.innerHTML = '';
+  if (sequence.length == 0) {
+    innerCircle.innerHTML = '';
+    innerCircle.removeEventListener('click', playSequence);
+  };
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
   sequence.push(randomNum);
   sequence.forEach((number, index) => {
