@@ -15,8 +15,8 @@ document.querySelectorAll('.pad').forEach(pad => {
 innerCircle.addEventListener('click', startGame);
 
 function startGame() {
+  innerCircle.removeEventListener('click', startGame);
   innerCircle.innerHTML = '';
-  innerCircle.removeEventListener('click', playSequence);
   setTimeout(() => playSequence(), 750);
 };
 
