@@ -21,7 +21,7 @@ function handleMouseUp() {
   const { number } = this.dataset;
   if (number != sequence[sequenceIndex]) return gameOver();
   if (sequenceIndex == sequence.length - 1) {
-    setTimeout(() => playSequence(), 1000);
+    setTimeout(() => playSequence(), 750);
     innerCircle.innerHTML = `${sequence.length}`;
   };
   sequenceIndex++;
