@@ -3,13 +3,19 @@ let sequenceIndex = 0;
 let playing = false;
 const innerCircle = document.querySelector('.inner-circle');
 
-innerCircle.addEventListener('click', playSequence);
+innerCircle.addEventListener('click', startGame);
 
 document.querySelectorAll('.pad').forEach(pad => {
   pad.addEventListener('mousedown', handleMouseDown);
   pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
 });
+
+function startGame() {
+  innerCircle.innerHTML = '';
+  innerCircle.removeEventListener('click', playSequence);
+  setTimeout(() => playSequence(), 750);
+};
 
 function handleMouseDown() {
   this.classList.add('active');
@@ -33,10 +39,6 @@ function handleTransitionEnd() {
 
 function playSequence() {
   playing = true;
-  if (sequence.length == 0) {
-    innerCircle.innerHTML = '';
-    innerCircle.removeEventListener('click', playSequence);
-  };
   const randomNum = Math.floor(Math.random() * (4 - 1 + 1) + 1);
   sequence.push(randomNum);
   sequence.forEach((number, index) => {
@@ -44,7 +46,7 @@ function playSequence() {
       const pad = document.querySelector(`[data-number='${number}']`);
       pad.classList.add('active');
       if (index == sequence.length - 1) setTimeout(() => playing = false, 275);
-    }, (index + 1) * 750)
+    }, index * 750)
   })
   sequenceIndex = 0;
 };
