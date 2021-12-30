@@ -100,14 +100,13 @@ body {
 
 #fx-container {
   position: absolute;
-  bottom: 98px;
+  bottom: 0;
   display: flex;
   color: silver;
-  /* background-color: silver; */
-  /* border-top-right-radius: 50%;
-  border-top-left-radius: 50%; */
-  border-radius: 50%;
-  padding: 4px 4px 4px 4px;
+  background-color: black;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  padding: 3px 3px 2px 3px;
 }
 
 .material-icons {
