@@ -3,13 +3,13 @@ let sequenceIndex = 0;
 let playing = false;
 const innerCircle = document.querySelector('.inner-circle');
 
-innerCircle.addEventListener('click', startGame);
-
 document.querySelectorAll('.pad').forEach(pad => {
   pad.addEventListener('mousedown', handleMouseDown);
   pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
 });
+
+innerCircle.addEventListener('click', startGame);
 
 function startGame() {
   innerCircle.innerHTML = '';
