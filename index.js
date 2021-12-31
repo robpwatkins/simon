@@ -1,11 +1,12 @@
 const sequence = [];
 let sequenceIndex = 0;
 let playing = false;
+const pads = document.querySelectorAll('.pad');
 const innerCircle = document.querySelector('.inner-circle');
 const fx = document.querySelector('.fx');
 let fxEnabled = true;
 
-document.querySelectorAll('.pad').forEach(pad => {
+pads.forEach(pad => {
   pad.addEventListener('mousedown', handleMouseDown);
   pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
@@ -33,7 +34,10 @@ function handleMouseUp() {
   this.classList.remove('active');
   if (sequence.length == 0) return;
   const { number } = this.dataset;
-  if (number != sequence[sequenceIndex]) return gameOver();
+  if (number != sequence[sequenceIndex]) {
+    this.style.transition = 'none';
+    return gameOver();
+  };
   if (sequenceIndex == sequence.length - 1) {
     setTimeout(() => playSequence(), 750);
     innerCircle.innerHTML = `${sequence.length}`;
@@ -61,11 +65,28 @@ function playSequence() {
 
 function gameOver() {
   innerCircle.innerHTML = 'GAME OVER';
-  innerCircle.removeEventListener('click', playSequence);
+  flashAll();
   setTimeout(() => {
     innerCircle.innerHTML = 'START';
     innerCircle.addEventListener('click', playSequence);
-  }, 1500)
+  }, 2000)
   sequence.splice(0);
   sequenceIndex = 0;
 };
+
+function flashAll() {
+  playing = true;
+  let count = 0;
+  while (count < 3) {
+    setTimeout(() => {
+      pads.forEach(pad => {
+        pad.style.transition = 'all .25s';
+        pad.classList.add('active');
+      });
+      if (count == 3) {
+        setTimeout(() => playing = false, count * 350);
+      }
+    }, count * 350)
+    count++;
+  }
+}
