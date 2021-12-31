@@ -101,7 +101,8 @@ body {
 #fx-container {
   position: absolute;
   bottom: 0;
-  display: flex;
+  /* display: flex; */
+  display: none;
   color: silver;
   background-color: black;
   border-top-right-radius: 50%;

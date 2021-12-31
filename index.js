@@ -3,14 +3,14 @@ let sequenceIndex = 0;
 let playing = false;
 const pads = document.querySelectorAll('.pad');
 const innerCircle = document.querySelector('.inner-circle');
-const fx = document.querySelector('.fx');
-let fxEnabled = true;
+// const fx = document.querySelector('.fx');
+// let fxEnabled = true;
 
 pads.forEach(pad => {
   pad.addEventListener('mousedown', handleMouseDown);
   pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
-  fx.addEventListener('click', handleFXClick);
+  // fx.addEventListener('click', handleFXClick);
 });
 
 innerCircle.addEventListener('click', startGame);
@@ -21,10 +21,10 @@ function startGame() {
   setTimeout(() => playSequence(), 750);
 };
 
-function handleFXClick() {
-  fxEnabled = !fxEnabled;
-  fx.innerHTML = fxEnabled ? 'volume_up' : 'volume_off';
-}
+// function handleFXClick() {
+//   fxEnabled = !fxEnabled;
+//   fx.innerHTML = fxEnabled ? 'volume_up' : 'volume_off';
+// }
 
 function handleMouseDown() {
   this.classList.add('active');
