@@ -3,15 +3,17 @@ let sequenceIndex = 0;
 let playing = false;
 const pads = document.querySelectorAll('.pad');
 const innerCircle = document.querySelector('.inner-circle');
-// const fx = document.querySelector('.fx');
-// let fxEnabled = true;
+const fxSwitch = document.querySelector('.fx-switch');
+let fxEnabled = true;
 
 pads.forEach(pad => {
   pad.addEventListener('mousedown', handleMouseDown);
   pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
-  // fx.addEventListener('click', handleFXClick);
+  fxSwitch.addEventListener('click', handleFXClick);
 });
+
+document.querySelectorAll('.pad-fx').forEach(fx => fx.volume = 0.5)
 
 innerCircle.addEventListener('click', startGame);
 
@@ -21,20 +23,26 @@ function startGame() {
   setTimeout(() => playSequence(), 750);
 };
 
-// function handleFXClick() {
-//   fxEnabled = !fxEnabled;
-//   fx.innerHTML = fxEnabled ? 'volume_up' : 'volume_off';
-// }
+function handleFXClick() {
+  fxEnabled = !fxEnabled;
+  fxSwitch.innerHTML = fxEnabled ? 'volume_up' : 'volume_off';
+}
 
 function handleMouseDown() {
+  const { pad_number } = this.dataset;
+  if (fxEnabled && pad_number == sequence[sequenceIndex]) {
+    const fx = document.querySelector(`[data-fx_number='${pad_number}'`);
+    fx.currentTime = 0;
+    fx.play();
+  }
   this.classList.add('active');
 };
 
 function handleMouseUp() {
   this.classList.remove('active');
   if (sequence.length == 0) return;
-  const { number } = this.dataset;
-  if (number != sequence[sequenceIndex]) {
+  const { pad_number } = this.dataset;
+  if (pad_number != sequence[sequenceIndex]) {
     this.style.transition = 'none';
     return gameOver();
   };
@@ -55,7 +63,12 @@ function playSequence() {
   sequence.push(randomNum);
   sequence.forEach((number, index) => {
     setTimeout(() => {
-      const pad = document.querySelector(`[data-number='${number}']`);
+      const pad = document.querySelector(`[data-pad_number='${number}']`);
+      if (fxEnabled) {
+        const fx = document.querySelector(`[data-fx_number='${number}']`);
+        fx.currentTime = 0;
+        fx.play();
+      }
       pad.classList.add('active');
       if (index == sequence.length - 1) setTimeout(() => playing = false, 275);
     }, index * 750)
@@ -77,8 +90,13 @@ function gameOver() {
 function flashAll() {
   playing = true;
   let count = 0;
+  const fx = document.querySelector('[data-fx_number="5"]');
   while (count < 3) {
     setTimeout(() => {
+      if (fxEnabled) {
+        fx.currentTime = 0;
+        fx.play();
+      }
       pads.forEach(pad => {
         pad.style.transition = 'all .25s';
         pad.classList.add('active');

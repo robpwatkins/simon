@@ -98,11 +98,10 @@ body {
   font-size: 1.25rem;
 }
 
-#fx-container {
+#fx-switch-container {
   position: absolute;
   bottom: 0;
-  /* display: flex; */
-  display: none;
+  display: flex;
   color: silver;
   background-color: black;
   border-top-right-radius: 50%;
