@@ -32,6 +32,7 @@ function handleFXClick() {
 }
 
 function handleMouseDown() {
+  if (playing) return;
   const { pad_number } = this.dataset;
   if (gameStarted && pad_number != sequence[sequenceIndex]) return gameOver();
   if (fxEnabled) {
@@ -43,6 +44,7 @@ function handleMouseDown() {
 };
 
 function handleMouseUp() {
+  if (playing) return;
   this.classList.remove('active');
   if (sequence.length == 0) return;
   const { pad_number } = this.dataset;
