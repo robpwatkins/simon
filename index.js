@@ -32,13 +32,14 @@ function handleFXClick() {
 }
 
 function handleMouseDown() {
-  this.classList.add('active');
   const { pad_number } = this.dataset;
+  if (gameStarted && pad_number != sequence[sequenceIndex]) return gameOver();
   if (fxEnabled) {
     const fx = document.querySelector(`[data-fx_number='${pad_number}'`);
     fx.currentTime = 0;
     fx.play();
   }
+  this.classList.add('active');
 };
 
 function handleMouseUp() {
@@ -85,7 +86,7 @@ function gameOver() {
   flashAll();
   setTimeout(() => {
     innerCircle.innerHTML = 'START';
-    innerCircle.addEventListener('click', playSequence);
+    innerCircle.addEventListener('click', startGame);
   }, 2000)
   sequence.splice(0);
   sequenceIndex = 0;
