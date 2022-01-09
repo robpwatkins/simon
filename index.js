@@ -27,7 +27,7 @@ if (saved) {
 //loading sound into the created audio context
 function loadSound() {
     //set the audio file's URL
-    var audioURL = '/sounds/simon_full.mp3';
+    var audioURL = 'https://github.com/robpwatkins/simon/blob/main/sounds/simon_full.mp3';
 
     //creating a new request
     var request = new XMLHttpRequest();
