@@ -19,12 +19,6 @@ catch (e) {
   console.log("Your browser doesn't support Web Audio API");
 }
 
-// if (saved) {
-//   playSound(saved);
-// } else {
-//   loadSound();
-// }
-
 function loadSound() {
   var audioURL = '/sounds/simon_full.mp3';
   var request = new XMLHttpRequest();
@@ -38,7 +32,7 @@ function loadSound() {
   request.send();
 }
 
-function playSound(buffer) {
+function playSound(buffer, startTime) {
   if (source) {
     source.stop();
     source = null;
@@ -46,7 +40,7 @@ function playSound(buffer) {
   source = context.createBufferSource();
   source.buffer = buffer;
   source.connect(context.destination);
-  source.start(0);
+  source.start(0, startTime, 1);
 }
 
 // document.querySelectorAll('.sound').forEach((element) => element.addEventListener('click', () => {
@@ -61,8 +55,10 @@ try {
 }
 
 pads.forEach(pad => {
-  pad.addEventListener('mousedown', handleMouseDown);
-  pad.addEventListener('mouseup', handleMouseUp);
+  // pad.addEventListener('mousedown', handleMouseDown);
+  // pad.addEventListener('mouseup', handleMouseUp);
+  pad.addEventListener('pointerdown', handleMouseDown);
+  pad.addEventListener('pointerup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
   fxSwitch.addEventListener('click', handleFXSwitchClick);
 });
@@ -87,17 +83,17 @@ function handleFXSwitchClick() {
 }
 
 function handleMouseDown() {
-  return playSound(saved);
   if (playing) return;
   const number = Number(this.dataset.pad_number);
   if (gameStarted && number != sequence[sequenceIndex]) return gameOver();
   if (fxEnabled) {
+    playSound(saved, number);
     // fx.currentTime = Number(number);
     // fx.play();
     // playSound();
-    setInterval(() => {
-      if (fx.currentTime.toFixed(1) == number + .6) fx.pause();
-    }, 100)
+    // setInterval(() => {
+    //   if (fx.currentTime.toFixed(1) == number + .6) fx.pause();
+    // }, 100)
   }
   this.classList.add('active');
 };
