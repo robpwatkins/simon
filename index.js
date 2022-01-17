@@ -5,19 +5,11 @@ let playing = false;
 const pads = document.querySelectorAll('.pad');
 const innerCircle = document.querySelector('.inner-circle');
 const fxSwitch = document.querySelector('.fx-switch');
-const fx = document.querySelector('#fx');
 let fxEnabled = true;
 let gameStarted = false;
 let context;
 let saved;
 let source;
-
-try {
-
-}
-catch (e) {
-  console.log("Your browser doesn't support Web Audio API");
-}
 
 function loadSound() {
   var audioURL = '/sounds/simon_full.mp3';
@@ -32,41 +24,31 @@ function loadSound() {
   request.send();
 }
 
-function playSound(buffer, startTime) {
+function playSound(startTime) {
   if (source) {
     source.stop();
     source = null;
   };
   source = context.createBufferSource();
-  source.buffer = buffer;
+  source.buffer = saved;
   source.connect(context.destination);
   source.start(0, startTime, 1);
 }
 
-// document.querySelectorAll('.sound').forEach((element) => element.addEventListener('click', () => {
-//   if (!gameStarted) {
-//     gameStarted = true;
 try {
   context = new (window.AudioContext || window.webkitAudioContext)();
   context.resume();
   loadSound();
 } catch(e) {
-  console.log('Narp.')
+  alert('Narp.');
 }
 
 pads.forEach(pad => {
-  // pad.addEventListener('mousedown', handleMouseDown);
-  // pad.addEventListener('mouseup', handleMouseUp);
   pad.addEventListener('pointerdown', handleMouseDown);
   pad.addEventListener('pointerup', handleMouseUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
   fxSwitch.addEventListener('click', handleFXSwitchClick);
 });
-
-// const AudioContext = window.AudioContext || window.webkitAudioContext || false;
-// console.log('AudioContext: ', AudioContext);
-
-// document.querySelectorAll('.pad-fx').forEach(fx => fx.volume = 0.5);
 
 innerCircle.addEventListener('click', startGame);
 
@@ -86,15 +68,7 @@ function handleMouseDown() {
   if (playing) return;
   const number = Number(this.dataset.pad_number);
   if (gameStarted && number != sequence[sequenceIndex]) return gameOver();
-  if (fxEnabled) {
-    playSound(saved, number);
-    // fx.currentTime = Number(number);
-    // fx.play();
-    // playSound();
-    // setInterval(() => {
-    //   if (fx.currentTime.toFixed(1) == number + .6) fx.pause();
-    // }, 100)
-  }
+  if (fxEnabled) playSound(number);
   this.classList.add('active');
 };
 
@@ -126,10 +100,7 @@ function playSequence() {
     setTimeout(() => {
       const pad = document.querySelector(`[data-pad_number='${number}']`);
       if (fxEnabled) {
-        // const fx = document.querySelector(`[data-fx_number='${number}']`);
-        fx.currentTime = number;
-        fx.play();
-        setTimeout(() => fx.pause(), 600);
+        playSound(number);
       }
       pad.classList.add('active');
       if (index == sequence.length - 1) setTimeout(() => playing = false, 275);
@@ -153,23 +124,14 @@ function gameOver() {
 function flashAll() {
   playing = true;
   let count = 0;
-  // const fx = document.querySelector('[data-fx_number="5"]');
   while (count < 3) {
     setTimeout(() => {
-      if (fxEnabled) {
-        fx.currentTime = 0;
-        fx.play();
-      }
+      if (fxEnabled) playSound(0);
       pads.forEach(pad => {
         pad.style.transition = 'all .25s';
         pad.classList.add('active');
       });
-      if (count == 3) {
-        setTimeout(() => playing = false, count * 350);
-        setInterval(() => {
-          if (fx.currentTime.toFixed(1) == 0.6) fx.pause();
-        }, 100)
-      }
+      if (count == 3) setTimeout(() => playing = false, count * 350);
     }, count * 350)
     count++;
   }
