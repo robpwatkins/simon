@@ -7,7 +7,6 @@ const innerCircle = document.querySelector('#inner-circle');
 const fxSwitch = document.querySelector('.fx-switch');
 let fxEnabled = true;
 let gameStarted = false;
-let context;
 let savedBuffer;
 let source;
 
