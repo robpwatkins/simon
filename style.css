@@ -80,7 +80,7 @@ body {
   filter: drop-shadow(0 0 0.65rem #38affd);
 }
 
-.inner-circle {
+#inner-circle {
   cursor: default;
   position: absolute;
   display: flex;

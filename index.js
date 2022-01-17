@@ -3,12 +3,12 @@ let sequenceIndex = 0;
 const delay = 750;
 let playing = false;
 const pads = document.querySelectorAll('.pad');
-const innerCircle = document.querySelector('.inner-circle');
+const innerCircle = document.querySelector('#inner-circle');
 const fxSwitch = document.querySelector('.fx-switch');
 let fxEnabled = true;
 let gameStarted = false;
 let context;
-let saved;
+let savedBuffer;
 let source;
 
 function loadSound() {
@@ -18,19 +18,15 @@ function loadSound() {
   request.responseType = 'arraybuffer';
   request.onload = function () {
     context.decodeAudioData(request.response, function (buffer) {
-      saved = buffer;
+      savedBuffer = buffer;
     });
   };
   request.send();
 }
 
 function playSound(startTime) {
-  if (source) {
-    source.stop();
-    source = null;
-  };
   source = context.createBufferSource();
-  source.buffer = saved;
+  source.buffer = savedBuffer;
   source.connect(context.destination);
   source.start(0, startTime, 1);
 }
