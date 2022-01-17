@@ -10,10 +10,11 @@ let gameStarted = false;
 let savedBuffer;
 let source;
 
+const context = new (window.AudioContext || window.webkitAudioContext)();
+
 function loadSound() {
-  var audioURL = '/sounds/simon_full.mp3';
   var request = new XMLHttpRequest();
-  request.open('GET', audioURL, true);
+  request.open('GET', '/sounds/simon_full.mp3', true);
   request.responseType = 'arraybuffer';
   request.onload = function () {
     context.decodeAudioData(request.response, function (buffer) {
@@ -21,26 +22,22 @@ function loadSound() {
     });
   };
   request.send();
-}
+};
+
+context.resume();
+loadSound();
 
 function playSound(startTime) {
   source = context.createBufferSource();
   source.buffer = savedBuffer;
   source.connect(context.destination);
   source.start(0, startTime, 1);
-}
+};
 
-try {
-  context = new (window.AudioContext || window.webkitAudioContext)();
-  context.resume();
-  loadSound();
-} catch(e) {
-  alert('Narp.');
-}
 
 pads.forEach(pad => {
-  pad.addEventListener('pointerdown', handleMouseDown);
-  pad.addEventListener('pointerup', handleMouseUp);
+  pad.addEventListener('pointerdown', handlePointerDown);
+  pad.addEventListener('pointerup', handlePointerUp);
   pad.addEventListener('transitionend', handleTransitionEnd);
   fxSwitch.addEventListener('click', handleFXSwitchClick);
 });
@@ -59,7 +56,7 @@ function handleFXSwitchClick() {
   fxSwitch.innerHTML = fxEnabled ? 'volume_up' : 'volume_off';
 }
 
-function handleMouseDown() {
+function handlePointerDown() {
   if (playing) return;
   const number = Number(this.dataset.pad_number);
   if (gameStarted && number != sequence[sequenceIndex]) return gameOver();
@@ -67,13 +64,14 @@ function handleMouseDown() {
   this.classList.add('active');
 };
 
-function handleMouseUp() {
+function handlePointerUp() {
+  console.log('heyoo');
   if (playing) return;
   this.classList.remove('active');
   if (sequence.length == 0) return;
   const { pad_number } = this.dataset;
   if (pad_number != sequence[sequenceIndex]) {
-    this.style.transition = 'none';
+    // this.style.transition = 'none';
     return gameOver();
   };
   if (sequenceIndex == sequence.length - 1) {
@@ -123,11 +121,11 @@ function flashAll() {
     setTimeout(() => {
       if (fxEnabled) playSound(0);
       pads.forEach(pad => {
-        pad.style.transition = 'all .25s';
+        pad.style.transition = `all .${delay / 6}s`;
         pad.classList.add('active');
       });
-      if (count == 3) setTimeout(() => playing = false, count * 350);
-    }, count * 350)
+      if (count == 3) setTimeout(() => playing = false, count * (delay / 3));
+    }, count * (delay / 3))
     count++;
   }
 }
