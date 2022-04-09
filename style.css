@@ -23,19 +23,16 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 350px;
+  max-width: 750px;
   height: 100%;
-  max-height: 600px;
-  /* box-shadow: 0px 0px 5px black; */
+  max-height: 1050px;
   border-radius: 15px;
   overflow: hidden;
-  /* border: 2px solid black; */
 }
 
 .pad-container {
   width: 50%;
   height: 50%;
-  /* border: 1px solid black; */
 }
 
 .pad {
@@ -45,22 +42,22 @@ body {
 }
 
 .top-left {
-  /* border-top-left-radius: 12%; */
+  border-top-left-radius: 15px;
   background-color: #52B762;
 }
 
 .top-right {
-  /* border-top-right-radius: 15%; */
+  border-top-right-radius: 15px;
   background-color: #BE3435;
 }
 
 .bottom-left {
-  /* border-bottom-left-radius: 15%; */
+  border-bottom-left-radius: 15px;
   background-color: #D4D141;
 }
 
 .bottom-right {
-  /* border-bottom-right-radius: 15%; */
+  border-bottom-right-radius: 15px;
   background-color: #007ED0;
 }
 
